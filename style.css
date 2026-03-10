@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mini Social Media Platform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Mini Instagram - Sharing Platform</h2>
+
+<div class="upload-box">
+<input type="file" id="imageUpload">
+<input type="text" id="caption" placeholder="Write a caption">
+<button onclick="addPost()">Post</button>
+</div>
+
+<div id="feed"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
