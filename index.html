@@ -1,31 +1,248 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ShareHub</title>
-<link rel="stylesheet" href="style.css">
+<title>ShareConnect - Social Platform</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:#fafafa;
+}
+
+/* LOGIN PAGE */
+
+#loginPage{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login-box{
+background:white;
+padding:30px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+.login-box input{
+display:block;
+width:250px;
+margin:10px auto;
+padding:10px;
+}
+
+button{
+padding:10px;
+background:#3897f0;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+/* FEED PAGE */
+
+header{
+background:white;
+padding:15px;
+text-align:center;
+border-bottom:1px solid #ddd;
+display:none;
+}
+
+.container{
+width:500px;
+margin:auto;
+margin-top:20px;
+display:none;
+}
+
+.create-post{
+background:white;
+padding:15px;
+border:1px solid #ddd;
+}
+
+.create-post input{
+margin-top:5px;
+}
+
+.post{
+background:white;
+margin-top:20px;
+border:1px solid #ddd;
+}
+
+.post img{
+width:100%;
+}
+
+.post-content{
+padding:10px;
+}
+
+.like{
+cursor:pointer;
+color:red;
+display:block;
+margin-top:10px;
+}
+
+.comment-box input{
+width:70%;
+padding:5px;
+}
+
+.comments p{
+background:#eee;
+padding:5px;
+border-radius:3px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<header>
-<h1>ShareHub - Social Platform</h1>
-</header>
+<!-- LOGIN PAGE -->
 
-<div class="post-box">
-<h2>Create Post</h2>
+<div id="loginPage">
 
-<input type="text" id="username" placeholder="Enter your name">
+<div class="login-box">
 
-<textarea id="caption" placeholder="Write something..."></textarea>
+<h1>ShareConnect</h1>
+<p>Online Platform for Sharing and Interaction</p>
 
-<input type="file" id="imageUpload">
+<input type="text" placeholder="Username">
+<input type="password" placeholder="Password">
 
-<button onclick="createPost()">Post</button>
+<button onclick="login()">Login</button>
+
 </div>
 
-<div id="feed"></div>
+</div>
 
-<script src="script.js"></script>
+<!-- FEED PAGE -->
+
+<header id="header">
+<h2>ShareConnect Feed</h2>
+</header>
+
+<div class="container" id="feedPage">
+
+<div class="create-post">
+
+<input type="text" id="caption" placeholder="Write caption"><br><br>
+
+<input type="file" id="imageUpload"><br><br>
+
+<button onclick="createPost()">Share</button>
+
+</div>
+
+<div id="posts"></div>
+
+</div>
+
+<script>
+
+/* LOGIN */
+
+function login(){
+
+document.getElementById("loginPage").style.display="none";
+
+document.getElementById("feedPage").style.display="block";
+
+document.getElementById("header").style.display="block";
+
+}
+
+/* CREATE POST */
+
+function createPost(){
+
+let caption=document.getElementById("caption").value;
+
+let file=document.getElementById("imageUpload").files[0];
+
+if(!file){
+alert("Please upload image");
+return;
+}
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+let post=document.createElement("div");
+
+post.className="post";
+
+post.innerHTML=`
+
+<img src="${e.target.result}">
+
+<div class="post-content">
+
+<p>${caption}</p>
+
+<span class="like" onclick="likePost(this)">❤️ Like</span>
+
+<div class="comment-box">
+
+<input type="text" placeholder="Write comment">
+
+<button onclick="addComment(this)">Post</button>
+
+</div>
+
+<div class="comments"></div>
+
+</div>
+
+`;
+
+document.getElementById("posts").prepend(post);
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+/* LIKE */
+
+function likePost(x){
+
+x.innerHTML="❤️ Liked";
+
+}
+
+/* COMMENT */
+
+function addComment(btn){
+
+let input=btn.previousElementSibling;
+
+let text=input.value;
+
+if(text=="") return;
+
+let p=document.createElement("p");
+
+p.textContent=text;
+
+btn.parentElement.nextElementSibling.appendChild(p);
+
+input.value="";
+
+}
+
+</script>
 
 </body>
 </html>
