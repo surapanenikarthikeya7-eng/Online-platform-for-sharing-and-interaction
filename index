@@ -1,0 +1,183 @@
+import java.util.*;
+
+class Post {
+
+    String caption;
+    int likes;
+    Queue<String> comments;
+    String image;
+
+    Post(String caption, String image) {
+        this.caption = caption;
+        this.image = image;
+        this.likes = 0;
+        comments = new LinkedList<>();
+    }
+}
+
+public class ShareConnectDSA {
+
+    static ArrayList<Post> posts = new ArrayList<>(); // Array
+    static Stack<Post> postStack = new Stack<>();     // Stack
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+
+        while(true){
+
+            System.out.println("\n===== ShareConnect Menu =====");
+            System.out.println("1. Create Post");
+            System.out.println("2. View Posts");
+            System.out.println("3. Like Post");
+            System.out.println("4. Add Comment");
+            System.out.println("5. Undo Last Post");
+            System.out.println("6. Exit");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch(choice){
+
+                case 1:
+                    createPost();
+                    break;
+
+                case 2:
+                    displayPosts();
+                    break;
+
+                case 3:
+                    likePost();
+                    break;
+
+                case 4:
+                    addComment();
+                    break;
+
+                case 5:
+                    undoPost();
+                    break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice");
+
+            }
+
+        }
+
+    }
+
+
+    static void createPost(){
+
+        System.out.println("Enter caption:");
+        String caption = sc.nextLine();
+
+        System.out.println("Enter image name:");
+        String image = sc.nextLine();
+
+        Post newPost = new Post(caption,image);
+
+        posts.add(newPost);       // Array insert
+        postStack.push(newPost);  // Stack push
+
+        System.out.println("Post created successfully!");
+
+    }
+
+
+    static void displayPosts(){
+
+        if(posts.size()==0){
+            System.out.println("No posts available");
+            return;
+        }
+
+        for(int i=0;i<posts.size();i++){
+
+            Post p = posts.get(i);
+
+            System.out.println("\nPost ID: "+i);
+            System.out.println("Caption: "+p.caption);
+            System.out.println("Image: "+p.image);
+            System.out.println("Likes: "+p.likes);
+
+            System.out.println("Comments:");
+
+            for(String c : p.comments){
+                System.out.println("- "+c);
+            }
+
+        }
+
+    }
+
+
+    static void likePost(){
+
+        displayPosts();
+
+        System.out.println("Enter post ID to like:");
+        int id = sc.nextInt();
+
+        if(id>=0 && id<posts.size()){
+
+            posts.get(id).likes++;
+            System.out.println("Post liked!");
+
+        }else{
+
+            System.out.println("Invalid Post ID");
+
+        }
+
+    }
+
+
+    static void addComment(){
+
+        displayPosts();
+
+        System.out.println("Enter post ID:");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        if(id>=0 && id<posts.size()){
+
+            System.out.println("Enter comment:");
+            String comment = sc.nextLine();
+
+            posts.get(id).comments.add(comment); // Queue enqueue
+
+            System.out.println("Comment added!");
+
+        }else{
+
+            System.out.println("Invalid Post ID");
+
+        }
+
+    }
+
+
+    static void undoPost(){
+
+        if(postStack.isEmpty()){
+
+            System.out.println("No post to undo");
+            return;
+
+        }
+
+        Post removed = postStack.pop(); // Stack pop
+        posts.remove(removed);          // Remove from array
+
+        System.out.println("Last post removed!");
+
+    }
+
+}
